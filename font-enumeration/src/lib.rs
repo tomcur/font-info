@@ -12,7 +12,7 @@ mod system;
 #[path = "./core_text.rs"]
 mod system;
 
-#[cfg(target_os = "macos")]
+#[cfg(windows)]
 #[path = "./direct_write.rs"]
 mod system;
 
