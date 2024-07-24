@@ -184,21 +184,22 @@ impl<W: std::io::Write> Out for HumanReadable<W> {
             write!(self.write, "            Features: ")?;
             for (idx, feat) in font.features().enumerate() {
                 if idx > 0 {
-                    write!(self.write, "                      ")?;
+                    write!(self.write, "\n                      ")?;
                 }
                 if let Some(name) = feat.name() {
-                    writeln!(self.write, "{}:{:?}", name, feat.action())?;
+                    write!(self.write, "{}:{:?}", name, feat.action())?;
                 } else {
-                    writeln!(self.write, "{:#X}:{:?}", feat.tag(), feat.action())?;
+                    write!(self.write, "{:#X}:{:?}", feat.tag(), feat.action())?;
                 }
             }
+            writeln!(self.write)?;
         }
 
         if matches!(self.options.print_writing_systems, PrintWritingSystems::Yes) {
             write!(self.write, "     Writing systems: ")?;
             for (idx, writing_system) in font.writing_systems().enumerate() {
                 if idx > 0 {
-                    write!(self.write, "                      ")?;
+                    write!(self.write, "\n                      ")?;
                 }
                 if let Some(script) = writing_system.script() {
                     write!(self.write, "{script:?}")?;
@@ -213,19 +214,20 @@ impl<W: std::io::Write> Out for HumanReadable<W> {
                 write!(self.write, ":")?;
                 if let Some(language) = writing_system.language() {
                     if let Some(name) = language.name() {
-                        writeln!(self.write, "{name}")?;
+                        write!(self.write, "{name}")?;
                     } else {
-                        writeln!(self.write, "{}", language.language())?;
+                        write!(self.write, "{}", language.language())?;
                     }
                 } else {
                     let tag = writing_system.language_tag();
                     if tag == 0x44464c54 {
-                        writeln!(self.write, "Default")?;
+                        write!(self.write, "Default")?;
                     } else {
-                        writeln!(self.write, "{tag:#X}")?;
+                        write!(self.write, "{tag:#X}")?;
                     }
                 }
             }
+            writeln!(self.write)?;
         }
 
         let Metrics {
