@@ -14,14 +14,14 @@ This is a cross-platform program that can parse font files and prints out
 information such as metrics and font style. It can find fonts installed or your
 system or you can point it to a specific font file.
 
-Supported font files:
+Supported font formats:
  - OpenType
  - TrueType
 
 Supported platforms:
- - Linux
- - Windows (untested)
- - MacOS (untested)
+ - Unix-like (Fontconfig)
+ - Windows (DirectWrite)
+ - MacOS (Core TExt)
 
 ## Usage
 
