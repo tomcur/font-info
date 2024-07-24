@@ -36,18 +36,18 @@ impl Collection {
 
     pub fn all<'c>(&'c self) -> impl Iterator<Item = Font<'c>> {
         self.all_fonts.iter().map(move |font| Font {
-            family: &font.family,
-            name: &font.name,
+            family_name: &font.family_name,
+            font_name: &font.font_name,
             path: &font.path,
         })
     }
 
-    pub fn by_family<'c, 'f>(&'c self, family: &'f str) -> impl Iterator<Item = Font<'c>> + 'f
+    pub fn by_family<'c, 'f>(&'c self, family_name: &'f str) -> impl Iterator<Item = Font<'c>> + 'f
     where
         'c: 'f,
     {
         self.all()
-            .filter(|font| utils::case_insensitive_match(font.family, family))
+            .filter(|font| utils::case_insensitive_match(font.family_name, family_name))
     }
 
     pub fn take(self) -> Vec<OwnedFont> {
@@ -57,15 +57,15 @@ impl Collection {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Font<'c> {
-    pub family: &'c str,
-    pub name: &'c str,
+    pub family_name: &'c str,
+    pub font_name: &'c str,
     pub path: &'c Path,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct OwnedFont {
-    family: String,
-    name: String,
+    family_name: String,
+    font_name: String,
     path: PathBuf,
 }
 

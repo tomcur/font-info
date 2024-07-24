@@ -13,8 +13,8 @@ pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
         .iter()
         .filter_map(|font| {
             Some(OwnedFont {
-                family: font.family_name(),
-                name: font.font_name(),
+                family_name: font.family_name(),
+                font_name: font.font_name(),
                 path: font.font_path()?,
             })
         })

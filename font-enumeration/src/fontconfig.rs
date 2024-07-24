@@ -22,8 +22,8 @@ pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
             let path = font.get_string(fontconfig::FC_FILE)?;
 
             Some(OwnedFont {
-                family: family.to_owned(),
-                name: name.to_owned(),
+                family_name: family.to_owned(),
+                font_name: name.to_owned(),
                 path: PathBuf::from(path),
             })
         })
