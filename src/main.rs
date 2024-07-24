@@ -410,6 +410,9 @@ fn main_(cli: Cli, mut out: impl Out) -> anyhow::Result<()> {
                     data.clear();
                     let mut file =
                         std::fs::File::open(path).with_context(|| "Failed opening font file")?;
+                    if let Ok(metadata) = file.metadata() {
+                        data.reserve(metadata.len() as usize);
+                    }
                     file.read_to_end(&mut data)
                         .with_context(|| "Failed reading font file")?;
                 }
