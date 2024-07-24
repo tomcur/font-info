@@ -1,11 +1,10 @@
 use std::{
     io::{IsTerminal, Read, Write},
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use anyhow::{anyhow, Context};
 use clap::Parser;
-use font_kit::{handle::Handle, source::SystemSource};
 use serde::{ser::SerializeSeq, Serializer};
 use swash::{FontDataRef, FontRef};
 
@@ -354,12 +353,6 @@ impl<W: serde::ser::SerializeSeq<Error = serde_json::Error>> Out for Json<W> {
     }
 }
 
-fn parse_font(data: &[u8], font_index: usize) -> anyhow::Result<FontRef<'_>> {
-    swash::FontRef::from_index(data, font_index).ok_or(anyhow!(
-        "Failed to find font at index {font_index} in font file"
-    ))
-}
-
 fn main_(cli: Cli, mut out: impl Out) -> anyhow::Result<()> {
     match (cli.font_file, cli.family_name) {
         (Some(font_file), None) => {
@@ -378,49 +371,37 @@ fn main_(cli: Cli, mut out: impl Out) -> anyhow::Result<()> {
         (None, Some(family_name)) => {
             log::info!("Querying for font family '{family_name}'");
 
-            let system_font_source = SystemSource::new();
-            let family = system_font_source
-                .select_family_by_name(&family_name)
-                .map_err(|_| anyhow!("Could not find font '{family_name}'"))?;
+            let font_collection = font_enumeration::Collection::new().unwrap();
 
-            let mut font_and_indices: Vec<(&'_ PathBuf, u32)> =
-                Vec::with_capacity(family.fonts().len());
-
-            for font in family.fonts() {
-                match font {
-                    Handle::Path { path, font_index } => {
-                        font_and_indices.push((path, *font_index));
-                    }
-                    Handle::Memory {
-                        bytes: _,
-                        font_index: _,
-                    } => {
-                        // I think this case doesn't occur with this usage
-                        unreachable!("If you're reading this, you've found a bug in this program. Please consider opening an issue at https://github.com/tomcur/termsnap and describing the steps taken to reach bug.")
-                    }
+            let mut font_files: Vec<&'_ Path> = Vec::new();
+            for font in font_collection.by_family(&family_name) {
+                if !font_files.contains(&font.path) {
+                    font_files.push(font.path);
                 }
             }
 
-            font_and_indices.sort_by_key(|v| v.0);
-
-            let mut prev_path = &PathBuf::new();
             let mut data = Vec::new();
-            for (idx, (path, font_idx)) in font_and_indices.into_iter().enumerate() {
-                if idx == 0 || path != prev_path {
-                    prev_path = path;
+            for font_file in font_files {
+                data.clear();
 
-                    data.clear();
-                    let mut file =
-                        std::fs::File::open(path).with_context(|| "Failed opening font file")?;
-                    if let Ok(metadata) = file.metadata() {
-                        data.reserve(metadata.len() as usize);
-                    }
-                    file.read_to_end(&mut data)
-                        .with_context(|| "Failed reading font file")?;
+                let font_file_name = font_file.to_string_lossy();
+
+                log::info!("Reading font file '{font_file_name}'");
+
+                let mut file =
+                    std::fs::File::open(font_file).with_context(|| "Failed opening font file")?;
+                if let Ok(metadata) = file.metadata() {
+                    data.reserve(metadata.len() as usize);
                 }
+                file.read_to_end(&mut data)
+                    .with_context(|| "Failed reading font file")?;
 
-                let font = parse_font(&data, font_idx as usize)?;
-                out.push_font(&path.to_string_lossy(), font_idx as usize, font)?;
+                let font_data = FontDataRef::new(&data)
+                    .ok_or_else(|| anyhow!("Failed to parse font file: '{font_file_name}'",))?;
+
+                for (idx, font) in font_data.fonts().enumerate() {
+                    out.push_font(&font_file_name, idx, font)?;
+                }
             }
         }
         (None, None) => {

@@ -1,5 +1,7 @@
 { lib
 , rustPlatform
+, pkg-config
+, fontconfig
 }:
 rustPlatform.buildRustPackage {
   pname = "font-metrics";
@@ -8,4 +10,10 @@ rustPlatform.buildRustPackage {
   cargoLock = {
     lockFile = ./Cargo.lock;
   };
+  nativeBuildInputs = [
+    pkg-config
+  ];
+  buildInputs = [
+    fontconfig
+  ];
 }

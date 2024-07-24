@@ -1,0 +1,22 @@
+[package]
+name = "font-enumeration"
+version = "0.9.0"
+edition = "2021"
+description = "Enumerate system fonts on Unix-like systems, Windows and MacOS"
+keywords = ["font", "text"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/tomcur/font-metrics"
+
+[dependencies]
+thiserror =  "1.0"
+log = "0.4"
+
+[target.'cfg(not(any(target_os = "macos", windows)))'.dependencies]
+fontconfig = "0.9"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+core-text = "20.1"
+
+[target.'cfg(windows)'.dependencies]
+dwrote = "0.11"
