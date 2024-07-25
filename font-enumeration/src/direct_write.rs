@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use dwrote::FontCollection;
 
-use crate::{Error, OwnedFont};
+use crate::{Error, OwnedFont, Stretch, Style, Weight};
 
 pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
     let collection = FontCollection::system();
@@ -20,6 +20,11 @@ pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
                 family_name: font.family_name(),
                 font_name: font.face_name(),
                 path,
+
+                // TODO: calculate
+                style: Style::Normal,
+                weight: Weight::NORMAL,
+                stretch: Stretch::NORMAL,
             })
         }
     }
