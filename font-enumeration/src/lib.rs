@@ -41,26 +41,31 @@ mod system;
 
 #[derive(Debug, Error)]
 pub enum Error {
+    /// Failed to initialize the system font collection.
     #[error("Could not initialize system collection")]
     SystemCollection,
 }
 
+/// A system font collection.
 pub struct Collection {
     // Using a boxed slice rather than Vec saves [Collection] from having to store a capacity
     all_fonts: Box<[Font]>,
 }
 
 impl Collection {
+    /// Construct a new font collection. This scans and caches the system fonts.
     pub fn new() -> Result<Self, Error> {
         let all_fonts = system::all_fonts()?;
 
         Ok(Self { all_fonts })
     }
 
+    /// Iterate over fonts in the collection.
     pub fn all(&self) -> impl Iterator<Item = &'_ Font> {
         self.all_fonts.iter()
     }
 
+    /// Iterate over fonts matching the given family name. The matching is case insensitive.
     pub fn by_family<'c, 'f>(&'c self, family_name: &'f str) -> impl Iterator<Item = &'c Font> + 'f
     where
         'c: 'f,
@@ -69,6 +74,7 @@ impl Collection {
             .filter(|font| utils::case_insensitive_match(&font.family_name, family_name))
     }
 
+    /// Consume this collection and get owned font data.
     pub fn take(self) -> Vec<Font> {
         self.all_fonts.into_vec()
     }
@@ -179,13 +185,25 @@ impl Stretch {
     }
 }
 
+/// A font.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Font {
+    /// Name of the family the font is part of.
     pub family_name: String,
+
+    /// Name of the font.
     pub font_name: String,
+
+    /// Path at which the font file is located.
     pub path: PathBuf,
+
+    /// The font's style.
     pub style: Style,
+
+    /// The font's weight.
     pub weight: Weight,
+
+    /// The font's stretch.
     pub stretch: Stretch,
 }
 
