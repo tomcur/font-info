@@ -1,3 +1,26 @@
+//! This is a cross-platform library for enumerating system fonts.
+//!
+//! # Supported platforms:
+//!
+//! - Unix-like (Fontconfig)
+//! - Windows (DirectWrite; **untested**)
+//! - MacOS (Core Text; **untested**)
+//!
+//! # Features and alternatives
+//!
+//! This library is for very simple uses, where you're only interested in listing installed fonts,
+//! perhaps filtering by family name. The listed fonts include family and font name, file path, and
+//! some limited font attributes (style, weight and stretch). It's unlikely this library will grow
+//! much beyond this feature set, and its dependency tree will remain small.
+//!
+//! ```rust
+//! let font_collection = font_enumeration::Collection::new().unwrap();
+//!
+//! for font in font_collection.by_family("DejaVu Sans") {
+//!     println!("{font:#?}");
+//! }
+//! ```
+
 use std::path::PathBuf;
 
 use thiserror::Error;
