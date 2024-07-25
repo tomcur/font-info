@@ -5,7 +5,7 @@ use dwrote::{
     FontWeight as DWriteWeight,
 };
 
-use crate::{Error, OwnedFont, Stretch, Style, Weight};
+use crate::{Error, Font, Stretch, Style, Weight};
 
 impl Style {
     fn from_direct_write(style: DWriteStyle) -> Self {
@@ -55,7 +55,7 @@ impl Stretch {
     }
 }
 
-pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
+pub fn all_fonts() -> Result<Box<[Font]>, Error> {
     let collection = FontCollection::system();
 
     let mut fonts = Vec::new();
@@ -67,7 +67,7 @@ pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
 
             // check: are there ever multiple files in a face?
             let path = face.get_files()[0].get_font_file_path().unwrap();
-            fonts.push(OwnedFont {
+            fonts.push(Font {
                 family_name: font.family_name(),
                 font_name: font.face_name(),
                 path,

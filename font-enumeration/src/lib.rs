@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use thiserror::Error;
 
@@ -24,7 +24,7 @@ pub enum Error {
 
 pub struct Collection {
     // Using a boxed slice rather than Vec saves [Collection] from having to store a capacity
-    all_fonts: Box<[OwnedFont]>,
+    all_fonts: Box<[Font]>,
 }
 
 impl Collection {
@@ -34,26 +34,19 @@ impl Collection {
         Ok(Self { all_fonts })
     }
 
-    pub fn all<'c>(&'c self) -> impl Iterator<Item = Font<'c>> {
-        self.all_fonts.iter().map(move |font| Font {
-            family_name: &font.family_name,
-            font_name: &font.font_name,
-            path: &font.path,
-            style: font.style,
-            weight: font.weight,
-            stretch: font.stretch,
-        })
+    pub fn all(&self) -> impl Iterator<Item = &'_ Font> {
+        self.all_fonts.iter()
     }
 
-    pub fn by_family<'c, 'f>(&'c self, family_name: &'f str) -> impl Iterator<Item = Font<'c>> + 'f
+    pub fn by_family<'c, 'f>(&'c self, family_name: &'f str) -> impl Iterator<Item = &'c Font> + 'f
     where
         'c: 'f,
     {
         self.all()
-            .filter(|font| utils::case_insensitive_match(font.family_name, family_name))
+            .filter(|font| utils::case_insensitive_match(&font.family_name, family_name))
     }
 
-    pub fn take(self) -> Vec<OwnedFont> {
+    pub fn take(self) -> Vec<Font> {
         self.all_fonts.into_vec()
     }
 }
@@ -163,24 +156,14 @@ impl Stretch {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Font<'c> {
-    pub family_name: &'c str,
-    pub font_name: &'c str,
-    pub path: &'c Path,
-    style: Style,
-    weight: Weight,
-    stretch: Stretch,
-}
-
 #[derive(Clone, Debug, PartialEq)]
-pub struct OwnedFont {
-    family_name: String,
-    font_name: String,
-    path: PathBuf,
-    style: Style,
-    weight: Weight,
-    stretch: Stretch,
+pub struct Font {
+    pub family_name: String,
+    pub font_name: String,
+    pub path: PathBuf,
+    pub style: Style,
+    pub weight: Weight,
+    pub stretch: Stretch,
 }
 
 #[cfg(test)]

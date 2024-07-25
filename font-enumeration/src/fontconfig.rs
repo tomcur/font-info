@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use fontconfig::{Fontconfig, ObjectSet, Pattern};
 
-use crate::{Error, OwnedFont, Stretch, Style, Weight};
+use crate::{Error, Font, Stretch, Style, Weight};
 
 impl Stretch {
     fn from_fc(width: i32) -> Self {
@@ -75,7 +75,7 @@ impl Weight {
     }
 }
 
-pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
+pub fn all_fonts() -> Result<Box<[Font]>, Error> {
     let fc = Fontconfig::new().ok_or(Error::SystemCollection)?;
 
     let pattern = Pattern::new(&fc);
@@ -100,7 +100,7 @@ pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
             let weight = font.weight().unwrap_or(fontconfig::FC_WEIGHT_REGULAR);
             let width = font.width().unwrap_or(fontconfig::FC_WIDTH_NORMAL);
 
-            Some(OwnedFont {
+            Some(Font {
                 family_name: family.to_owned(),
                 font_name: name.to_owned(),
                 path: PathBuf::from(path),

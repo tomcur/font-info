@@ -375,8 +375,8 @@ fn main_(cli: Cli, mut out: impl Out) -> anyhow::Result<()> {
 
             let mut font_files: Vec<&'_ Path> = Vec::new();
             for font in font_collection.by_family(&family_name) {
-                if !font_files.contains(&font.path) {
-                    font_files.push(font.path);
+                if !font_files.contains(&font.path.as_ref()) {
+                    font_files.push(font.path.as_ref());
                 }
             }
 

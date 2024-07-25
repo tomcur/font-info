@@ -5,7 +5,7 @@ use core_text::{
     font_descriptor::{CTFontTraits, SymbolicTraitAccessors, TraitAccessors},
 };
 
-use crate::{Error, OwnedFont, Stretch, Style, Weight};
+use crate::{Error, Font, Stretch, Style, Weight};
 
 fn roughly_eq(a: f32, b: f32) -> bool {
     const EPSILON: f32 = 0.00001;
@@ -95,7 +95,7 @@ impl Stretch {
     }
 }
 
-pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
+pub fn all_fonts() -> Result<Box<[Font]>, Error> {
     let collection = font_collection::create_for_all_families();
 
     let fonts = collection
@@ -104,7 +104,7 @@ pub fn all_fonts() -> Result<Box<[OwnedFont]>, Error> {
         .iter()
         .filter_map(|font| {
             let traits = font.traits();
-            Some(OwnedFont {
+            Some(Font {
                 family_name: font.family_name(),
                 font_name: font.font_name(),
                 path: font.font_path()?,
