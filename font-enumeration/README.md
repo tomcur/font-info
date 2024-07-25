@@ -17,3 +17,15 @@ Supported platforms:
 - Unix-like (Fontconfig)
 - Windows (DirectWrite; **untested**)
 - MacOS (Core Text; **untested**)
+
+## Features and alternatives
+
+This library is for very simple uses, where you're only interested in listing
+installed fonts, perhaps filtering by family name. The listed fonts include
+family and font name, file path, and some limited font attributes (style,
+weight and stretch). It's unlikely this library will grow much beyond this
+feature set, and its dependency tree will remain small.
+
+Consider using [Fontique](https://crates.io/crates/fontique) or
+[font-kit](https://crates.io/crates/font-kit) for features like font matching
+and fallback.
