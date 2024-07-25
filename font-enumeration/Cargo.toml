@@ -2,7 +2,7 @@
 name = "font-enumeration"
 version = "0.9.0"
 edition = "2021"
-description = "Enumerate system fonts on Unix-like systems, Windows and MacOS"
+description = "Simple cross-platform font enumeration"
 keywords = ["font", "text"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
