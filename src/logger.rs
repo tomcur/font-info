@@ -6,7 +6,7 @@ pub(crate) struct StderrLogger {}
 
 impl StderrLogger {
     pub fn init() -> Result<(), SetLoggerError> {
-        static LOGGER: &'static StderrLogger = &StderrLogger {};
+        static LOGGER: &StderrLogger = &StderrLogger {};
         log::set_logger(LOGGER)
     }
 }
