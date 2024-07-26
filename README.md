@@ -2,7 +2,7 @@
 
 # font-info 🗚
 
-**Load fonts and print their metrics**
+**Print font information and metrics**
 
 ![MIT/Apache 2.0](https://img.shields.io/badge/license-MIT%2FApache-blue.svg)
 [![Crates.io](https://img.shields.io/crates/v/font-info.svg)](https://crates.io/crates/font-info)
@@ -53,8 +53,8 @@ Font index in source: 0
 ... etc
 ```
 
-The previous command has human-readable output. To output as machine-readable
-JSON, run:
+By default font-info produces human-readable output. To output as
+machine-readable JSON, run:
 
 ```bash
 $ font-info --family-name "Liberation Sans" --format json
