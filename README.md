@@ -20,8 +20,8 @@ Supported font formats:
 
 Supported platforms:
  - Unix-like (Fontconfig)
- - Windows (DirectWrite)
- - MacOS (Core TExt)
+ - Windows (DirectWrite; **untested**)
+ - MacOS (Core Text; **untested**)
 
 ## Usage
 
