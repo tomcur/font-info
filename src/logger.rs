@@ -25,13 +25,13 @@ impl Log for StderrLogger {
         let _ = match (record.file(), record.line()) {
             (Some(file), Some(line)) => writeln!(
                 stderr,
-                "font-metrics: {}|{file}:{line}: {}",
+                "font-info: {}|{file}:{line}: {}",
                 record.level(),
                 record.args()
             ),
             (_, _) => writeln!(
                 stderr,
-                "font-metrics: {}: {}",
+                "font-info: {}: {}",
                 record.level(),
                 record.args()
             ),

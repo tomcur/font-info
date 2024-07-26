@@ -13,8 +13,8 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       rec {
-        packages.font-metrics = pkgs.callPackage ./default.nix { };
-        packages.default = packages.font-metrics;
+        packages.font-info = pkgs.callPackage ./default.nix { };
+        packages.default = packages.font-info;
         devShells.default = pkgs.mkShell
           {
             buildInputs = with pkgs; [

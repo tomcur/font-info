@@ -4,7 +4,7 @@
 , fontconfig
 }:
 rustPlatform.buildRustPackage {
-  pname = "font-metrics";
+  pname = "font-info";
   version = (lib.trivial.importTOML ./Cargo.toml).package.version;
   src = ./.;
   cargoLock = {

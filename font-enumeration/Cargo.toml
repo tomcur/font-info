@@ -6,7 +6,7 @@ description = "Simple cross-platform font enumeration"
 keywords = ["font", "text"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/tomcur/font-metrics"
+repository = "https://github.com/tomcur/font-info"
 
 [dependencies]
 thiserror =  "1.0"

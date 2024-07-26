@@ -25,13 +25,13 @@ jobs:
     - name: Run font-enumeration tests
       run: cargo test --package font-enumeration --verbose
 
-  build-and-test-font-metrics:
+  build-and-test-font-info:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build font-metrics
-      run: cargo build --package font-metrics --verbose
-    - name: Run font-metrics tests
-      run: cargo test --package font-metrics --verbose
+    - name: Build font-info
+      run: cargo build --package font-info --verbose
+    - name: Run font-info tests
+      run: cargo test --package font-info --verbose

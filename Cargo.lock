@@ -222,7 +222,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "font-metrics"
+name = "font-info"
 version = "0.1.0"
 dependencies = [
  "anyhow",
