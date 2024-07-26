@@ -78,3 +78,14 @@ Run using Nix flakes:
 # Run ls
 $ nix run github:tomcur/font-info -- --family-name "Liberation Sans"
 ```
+
+## Dependencies
+
+### fontconfig
+
+On Unix-like systems this program depends on fontconfig (and pkg-config for
+finding fontconfig during build). For example, for Debian or Ubuntu:
+
+```bash
+$ sudo apt install pkg-config libfontconfig-dev
+```
