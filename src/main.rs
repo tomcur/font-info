@@ -16,14 +16,14 @@ enum OutputFormat {
     Json,
 }
 
-/// Print metrics of fonts in a font file.
+/// Print font information and metrics.
 #[derive(Parser)]
 struct Cli {
     /// Print verbose debug output.
     #[arg(short, long)]
     verbose: bool,
 
-    /// Find all fonts in the giving file.
+    /// Load all fonts in the given font file.
     #[arg(long, group = "input")]
     font_file: Option<PathBuf>,
 
@@ -35,13 +35,13 @@ struct Cli {
     #[arg(long, default_value = "human-readable")]
     format: OutputFormat,
 
-    /// Print font features.
+    /// Print a listing of font features.
     #[arg(long)]
-    print_features: bool,
+    list_features: bool,
 
-    /// Print supported writing systems.
+    /// Print a listing of supported writing systems.
     #[arg(long)]
-    print_writing_systems: bool,
+    list_writing_systems: bool,
 }
 
 enum PrintFeatures {
@@ -443,12 +443,12 @@ fn main() -> anyhow::Result<()> {
     }
 
     let options = Options {
-        print_features: if cli.print_features {
+        print_features: if cli.list_features {
             PrintFeatures::Yes
         } else {
             PrintFeatures::No
         },
-        print_writing_systems: if cli.print_writing_systems {
+        print_writing_systems: if cli.list_writing_systems {
             PrintWritingSystems::Yes
         } else {
             PrintWritingSystems::No
