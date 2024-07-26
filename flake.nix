@@ -23,6 +23,9 @@
               rust-analyzer
               rustc
               rustfmt
+
+              pkg-config
+              fontconfig
             ];
           };
       }
