@@ -1,15 +1,6 @@
 pub(crate) fn case_insensitive_match(left: &str, right: &str) -> bool {
-    let mut left = left.chars();
-    let mut right = right.chars();
+    let left = left.chars().map(|c| c.to_lowercase()).flatten();
+    let right = right.chars().map(|c| c.to_lowercase()).flatten();
 
-    loop {
-        match (left.next(), right.next()) {
-            (None, None) => return true,
-            (left, right) => {
-                if left != right {
-                    return false;
-                }
-            }
-        }
-    }
+    left.eq(right)
 }
